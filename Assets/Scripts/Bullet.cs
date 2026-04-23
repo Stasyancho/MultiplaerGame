@@ -11,8 +11,8 @@ public class Bullet : NetworkBehaviour
     [Server]
     public void Init(uint owner, Vector3 target)
     {
-        this.owner = owner; //кто сделал выстрел
-        this.target = target; //куда должна лететь пуля
+        this.owner = owner; 
+        this.target = target; 
         inited = true;
     }
 
@@ -25,13 +25,13 @@ public class Bullet : NetworkBehaviour
 
             foreach (var item in Physics.OverlapSphere(transform.position, 1f))
             {
-                Player player = item.GetComponent<Player>();
+                var player = item.GetComponent<Player>();
                 if (player)
                 {
                     if (player.netId != owner)
                     {
-                        player.ChangeHealthValue(player.currentHealth - 1); //отнимаем одну жизнь по аналогии с примером SyncVar
-                        NetworkServer.Destroy(gameObject); //уничтожаем пулю
+                        player.TakeDamage(1); 
+                        NetworkServer.Destroy(gameObject); 
                     }
                 }
             }
@@ -39,7 +39,7 @@ public class Bullet : NetworkBehaviour
             if (lifetime < 0) 
             {
                 inited = false;
-                //NetworkServer.Destroy(gameObject); //значит ее можно уничтожить
+                //NetworkServer.Destroy(gameObject); 
             }
         }
     }

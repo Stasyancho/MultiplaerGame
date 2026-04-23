@@ -7,24 +7,11 @@ using UnityEngine;
 
 public class PlayerConnection : NetworkBehaviour
 { 
-    /// <summary>
-    /// The Sessions ID for the current server.
-    /// </summary>
     [SyncVar]
     public string sessionId = "";
-
-    /// <summary>
-    /// Player name.
-    /// </summary>
     public string username;
-
     public string ip;
-
-    /// <summary>
-    /// Platform the user is on.
-    /// </summary>
     public string platform;
-
     public string netid;
     
     [SerializeField] private GameObject gamePlayerPrefab;
@@ -44,15 +31,14 @@ public class PlayerConnection : NetworkBehaviour
     [Command]
     public void CmdSpawnPlayer()
     {
-        NetworkConnectionToClient conn = connectionToClient;
-        SpawnPLayer(conn);
+        SpawnPLayer(connectionToClient);
     }
     [Server]
     public void SpawnPLayer(NetworkConnectionToClient conn)
     {
-        GameObject playerGO = GameObject.Instantiate(gamePlayerPrefab); //Создаем локальный объект пули на сервере
+        var playerGO = Instantiate(gamePlayerPrefab); 
             
         NetworkServer.Spawn(playerGO, conn);
-        playerGO.GetComponent<Player>().Init(conn);
+        //playerGO.GetComponent<Player>().Init(conn);
     }
 }
